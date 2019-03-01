@@ -6,7 +6,7 @@ import time
 
 # IP address goes here
 HOST = '172.20.10.5'
-PORT = 20010
+PORT = 20012
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.bind((HOST, PORT))
 

@@ -4,7 +4,7 @@ import os
 import webbrowser
 
 HOST = '172.20.10.5'    # The remote host
-PORT = 20010          # The same port as used by the server
+PORT = 20012          # The same port as used by the server
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect((HOST, PORT))

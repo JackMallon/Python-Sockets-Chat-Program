@@ -5,7 +5,7 @@ from time import gmtime, strftime
 import time
 
 # IP address goes here
-HOST = '192.168.0.79'
+HOST = '172.20.10.5'
 PORT = 20010
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.bind((HOST, PORT))

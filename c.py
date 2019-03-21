@@ -3,15 +3,15 @@ import socket
 import os
 import webbrowser
 
-HOST = '172.20.10.5'    # The remote host
-PORT = 20011          # The same port as used by the server
+HOST = '127.0.1.1'    # The remote host
+PORT = 20015          # The same port as used by the server
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect((HOST, PORT))
 
 # Open youtube search
 def google(data):
-    print "Google function"
+    print("Google function")
     googleStr = data.replace("!google","")
     googleStr = googleStr.split(':', 1)[-1]
     googleStr = googleStr.strip()
@@ -20,7 +20,7 @@ def google(data):
     webbrowser.open_new_tab(url)
 
 def parse(data):
-    print str(data)
+    print(data)
     # Check if functions are called
     if "!flip" in data:
       flip()
@@ -50,7 +50,7 @@ t.start()
 def readFromServer(s):
     while 1:
         data = s.recv(100)
-        print str(data)
+        print(data)
         parse(data)
 
 # Start listening

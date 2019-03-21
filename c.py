@@ -2,9 +2,10 @@ import threading
 import socket
 import os
 import webbrowser
+import time
 
-HOST = '127.0.1.1'    # The remote host
-PORT = 20015          # The same port as used by the server
+HOST = '172.20.10.3'    # The remote host 172.20.10.3
+PORT = 20016          # The same port as used by the server
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect((HOST, PORT))
@@ -18,6 +19,13 @@ def google(data):
     googleStr = googleStr.replace(" ","+")
     url = "https://www.google.com/search?q=" + googleStr
     webbrowser.open_new_tab(url)
+	
+def ping(so):
+    start = time.time()
+    print("pong")
+    end = time.time()
+    #print("Yih yih")
+    print(end - start)
 
 def parse(data):
     print(data)
@@ -26,6 +34,12 @@ def parse(data):
       flip()
     if "!google" in data:
       google(data)
+	  
+def parseSend(data, so):
+    if "!ping" in data:
+      ping(so)
+	  
+
 
 # when we send data to the server, we are using a colon
 # at the end of a sentence to mark the end of the current sentence
@@ -42,6 +56,7 @@ def readInputThreaded(so):
     while 1:
         text = raw_input()
         text = username + ": " + text
+        parseSend(text, so)
         so.sendall(str(text))
 
 t = threading.Thread(target=readInputThreaded, args = (s,))

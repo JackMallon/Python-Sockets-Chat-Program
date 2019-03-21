@@ -5,8 +5,9 @@ from time import gmtime, strftime
 import time
 
 # IP address goes here
-HOST = '127.0.1.1'
-PORT = 20015
+HOST = '172.20.10.3'    # The remote host 172.20.10.3
+PORT = 20016          # The same port as used by the server
+
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.bind((HOST, PORT))
 
@@ -29,12 +30,17 @@ def flip():
     for singleClient in currentConnections:
         singleClient.send(str(flip))
 
+def ping():
+    for singleClient in currentConnections:
+        singleClient.send(str("pong"))
 # Parse messages to see if functions are called
 def parseInput(data, con):
     print str(data)
     # Check if functions are called
     if "!flip" in data:
         flip()
+    if "!ping" in data:
+        ping()
 
 #manages each connection
 def manageConnection(conn, addr):

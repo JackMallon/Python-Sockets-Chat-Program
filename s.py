@@ -9,7 +9,7 @@ import datetime
 
 # IP address goes here
 HOST = '127.0.0.1'
-PORT = 4500
+PORT = 5500
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.bind((HOST, PORT))

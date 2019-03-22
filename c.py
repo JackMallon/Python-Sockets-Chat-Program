@@ -20,12 +20,21 @@ def google(data):
     url = "https://www.google.com/search?q=" + googleStr
     webbrowser.open_new_tab(url)
 
+# Open youtube search
+def ping():
+    pingSock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    pingSock.connect((HOST, PORT))
+
+
 def parse(data):
     # Check if functions are called
     if "!flip" in data:
-      flip()
+        flip()
     if "!google" in data:
-      google(data)
+        google(data)
+    if "!ping" in data:
+        ping()
+
 
 def readInputThreaded(so):
     global username

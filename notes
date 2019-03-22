@@ -1,2 +1,0 @@
-COLOUR terminal
-print ("\033[31;1;42m    type input    \033[0m ")

@@ -3,8 +3,8 @@ import socket
 import os
 import webbrowser
 
-HOST = '80.233.39.231'
-PORT = 20041         
+HOST = '172.20.10.3'
+PORT = 20070   
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect((HOST, PORT))

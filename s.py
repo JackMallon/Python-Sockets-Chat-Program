@@ -4,6 +4,7 @@ import threading, Queue
 from time import gmtime, strftime
 import time
 from time import gmtime, strftime
+import datetime
 
 # IP address goes here
 HOST = '172.20.10.3'    
@@ -49,9 +50,7 @@ def rpsls():
         rpsls = "lizard"
     elif randomrpsls == 4:
         rpsls = "spock"
-		
-    if
-		
+				
     for singleClient in currentConnections:
         singleClient.send(str(rpsls, quote))
 		
@@ -92,7 +91,22 @@ def qotd():
 		
     for singleClient in currentConnections:
         singleClient.send(str(qotd))
+		
+def date():
+    date= ""
+    date ="Todays date is "+ datetime.date.today().strftime("%d-%m-%Y")
 
+    for singleClient in currentConnections:
+        singleClient.send(str(date))
+		
+def day():
+    day = ""
+    day ="Today is "+ datetime.date.today().strftime("%A")
+	
+    for singleClient in currentConnections:
+        singleClient.send(str(day))
+		
+		
 def checkData(data):
     if "!setUsername" in data:
         return False
@@ -147,6 +161,11 @@ def parseInput(data, con):
         qotd()
     if "!rpsls" in data:
         rpsls()
+    if "!date" in data:
+        date()
+    if "!day" in data:
+        day()
+
 
 
 #manages each connection

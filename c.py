@@ -3,41 +3,35 @@ import socket
 import os
 import webbrowser
 
-HOST = '127.0.1.1'    # The remote host
-PORT = 20015          # The same port as used by the server
+HOST = '127.0.0.1'    # The remote host
+PORT = 20037          # The same port as used by the server
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect((HOST, PORT))
+
+username = None
 
 # Open youtube search
 def google(data):
     print("Google function")
     googleStr = data.replace("!google","")
-    googleStr = googleStr.split(':', 1)[-1]
-    googleStr = googleStr.strip()
+    googleStr = googleStr.split(':', 1)[-1] = googleStr.strip()
     googleStr = googleStr.replace(" ","+")
     url = "https://www.google.com/search?q=" + googleStr
     webbrowser.open_new_tab(url)
 
 def parse(data):
-    print(data)
     # Check if functions are called
     if "!flip" in data:
       flip()
     if "!google" in data:
       google(data)
 
-# when we send data to the server, we are using a colon
-# at the end of a sentence to mark the end of the current sentence
-# later when the input comes back, we will then be breaking the input
-# into individual parts using the colon : to separate the lines
 def readInputThreaded(so):
+    global username
     print("Type your username:")
     username = raw_input()
-    #if os.name == "nt":
-    #    print("you run windows")
-    #elif os.name == "posix":
-    #    print("you run linux")
+    so.sendall(str("!setUsername" + username))
 
     while 1:
         text = raw_input()
@@ -48,9 +42,11 @@ t = threading.Thread(target=readInputThreaded, args = (s,))
 t.start()
 
 def readFromServer(s):
+    global username
     while 1:
         data = s.recv(100)
-        print(data)
+        if username != None:
+            print(data)
         parse(data)
 
 # Start listening

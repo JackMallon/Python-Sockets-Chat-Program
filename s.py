@@ -3,10 +3,11 @@ import socket
 import threading, Queue
 from time import gmtime, strftime
 import time
+from time import gmtime, strftime
 
 # IP address goes here
-HOST = '127.0.1.1'
-PORT = 20015
+HOST = '127.0.0.1'
+PORT = 20037
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.bind((HOST, PORT))
 
@@ -14,6 +15,8 @@ s.bind((HOST, PORT))
 currentConnections = list()
 # Log of the chat
 buffer = "Beginning of chat : "
+# List of usernames
+usernames = "Users in this chat: "
 
 # The functions we've added
 # Coin flip
@@ -29,12 +32,39 @@ def flip():
     for singleClient in currentConnections:
         singleClient.send(str(flip))
 
+def checkData(data):
+    if "!setUsername" in data:
+        return False
+    return True
+
+def addUsername(data):
+    global usernames
+    userData = data.replace("!setUsername","")
+    usernames = usernames + userData + " "
+    for singleClient in currentConnections:
+        singleClient.send(str(userData + " has joined the chat!"))
+
+def getUsers():
+    global usernames
+    for singleClient in currentConnections:
+        singleClient.send(str(usernames))
+
+def sendTime():
+    for singleClient in currentConnections:
+        singleClient.send(strftime("%H:%M:%S", gmtime()))
+
 # Parse messages to see if functions are called
 def parseInput(data, con):
     print str(data)
     # Check if functions are called
     if "!flip" in data:
         flip()
+    if "!setUsername" in data:
+        addUsername(data)
+    if "!users" in data:
+        getUsers()
+    if "!time" in data:
+        sendTime()
 
 #manages each connection
 def manageConnection(conn, addr):
@@ -46,10 +76,10 @@ def manageConnection(conn, addr):
     # Continue to listen
     while 1:
         data = conn.recv(1024)
-        print "rec:" + str(data)
         for singleClient in currentConnections:
             if singleClient != conn:
-                singleClient.send(str(data))
+                if checkData(data):
+                    singleClient.send(str(data))
         parseInput(data,conn)# Calling the parser
 
 while 1:
